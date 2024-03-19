@@ -5,11 +5,18 @@ import { createContext, useEffect, useState } from 'react';
 import { client } from './Apps/Utils/kindConfig';
 import { NavigationContainer } from '@react-navigation/native';
 import TabNavigation from './Apps/Navigations/TabNavigation';
-
+import { useFonts } from 'expo-font';
 
 
 export const AuthContext = createContext()
 export default function App() {
+  const [fontsLoaded, fontError] = useFonts({
+    'outfit-bold': require('./assets/fonts/Outfit-Bold.ttf'),
+    'outfit-medium': require('./assets/fonts/Outfit-Medium.ttf'),
+    'outfit-regular': require('./assets/fonts/Outfit-Regular.ttf'),
+    'outfit-semibold': require('./assets/fonts/Outfit-SemiBold.ttf'),
+  });
+
   const [auth, setAuth] = useState(false);
 
   useEffect(() => {
@@ -34,7 +41,7 @@ export default function App() {
       {/* <LoginScreen /> */}
       <AuthContext.Provider value={{ auth, setAuth }}>
         <NavigationContainer>
-          {auth?<TabNavigation/> : <LoginScreen />}
+          {auth ? <TabNavigation /> : <LoginScreen />}
         </NavigationContainer>
       </AuthContext.Provider>
     </View>
