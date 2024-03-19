@@ -1,13 +1,16 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import Colors from '../Utils/Colors'
-import {client} from './../Utils/kindConfig'
+import { client } from './../Utils/kindConfig'
+import { AuthContext } from '../../App'
 
 export default function LoginScreen() {
+     const { auth, setAuth } = useContext(AuthContext);
      const handleSignUp = async () => {
           const token = await client.register();
           if (token) {
                console.log("User logged in");
+               setAuth(true);
                // User was authenticated
           }
      };
@@ -16,13 +19,14 @@ export default function LoginScreen() {
           const token = await client.login();
           if (token) {
                console.log("User logged in");
+               setAuth(true);
                // User was authenticated
           }
      };
      return (
           <View>
                <Image source={require('./../../assets/images/beautiful-girl.jpg')}
-                    style={{ width: '100%', height: 400, objectFit: "cover" }}
+                    style={{ width: '100%', height: 350, objectFit: "cover" }}
                />
                <View style={{ padding: 30 }}>
                     <Text style={{ fontSize: 45, fontWeight: 'bold' }}>Welcome To <Text style={{ color: Colors.PRIMARY }}>App</Text></Text>

@@ -1,29 +1,29 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import LoginScreen from './Apps/Screen/LoginScreen';
-import { useEffect } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { client } from './Apps/Utils/kindConfig';
 import { NavigationContainer } from '@react-navigation/native';
 import TabNavigation from './Apps/Navigations/TabNavigation';
 
 
 
-
+export const AuthContext = createContext()
 export default function App() {
+  const [auth, setAuth] = useState(false);
 
   useEffect(() => {
     checkAuthenticate();
-  }, []);
+  }, [auth]);
 
   const checkAuthenticate = async () => {
     // Using `isAuthenticated` to check if the user is authenticated or not
     if (await client.isAuthenticated) {
       const userProfile = await client.getUserDetails();
-      console.log(userProfile);
-      console.log('User is already logged in');
+      setAuth(true)
       // Need to implement, e.g: call an api, etc...
     } else {
-      return <LoginScreen />
+      setAuth(false)
       // Need to implement, e.g: redirect user to sign in, etc..
     }
   };
@@ -32,9 +32,11 @@ export default function App() {
   return (
     <View style={styles.container}>
       {/* <LoginScreen /> */}
-      <NavigationContainer>
-        <TabNavigation />
-      </NavigationContainer>
+      <AuthContext.Provider value={{ auth, setAuth }}>
+        <NavigationContainer>
+          {auth?<TabNavigation/> : <LoginScreen />}
+        </NavigationContainer>
+      </AuthContext.Provider>
     </View>
   );
 }
