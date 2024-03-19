@@ -3,6 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import LoginScreen from './Apps/Screen/LoginScreen';
 import { useEffect } from 'react';
 import { client } from './Apps/Utils/kindConfig';
+import { NavigationContainer } from '@react-navigation/native';
+import TabNavigation from './Apps/Navigations/TabNavigation';
 
 
 
@@ -21,6 +23,7 @@ export default function App() {
       console.log('User is already logged in');
       // Need to implement, e.g: call an api, etc...
     } else {
+      return <LoginScreen />
       // Need to implement, e.g: redirect user to sign in, etc..
     }
   };
@@ -28,8 +31,10 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <LoginScreen />
-      <StatusBar style="auto" />
+      {/* <LoginScreen /> */}
+      <NavigationContainer>
+        <TabNavigation />
+      </NavigationContainer>
     </View>
   );
 }
