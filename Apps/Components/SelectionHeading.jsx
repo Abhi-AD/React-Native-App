@@ -5,6 +5,6 @@ import Colors from '../Utils/Colors'
 
 export default function SelectionHeading({heading}) {
      return (
-          <Text style={{ fontFamily: 'outfit-medium', fontSize: 20, marginBottom: 5, color: Colors.PRIMARY }}>{heading}</Text>
+          <Text style={{ fontFamily: 'outfit-medium', fontSize: 20, marginBottom: 5,marginTop:15, color: Colors.PRIMARY }}>{heading}</Text>
      )
 }

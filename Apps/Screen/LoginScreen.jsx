@@ -9,7 +9,6 @@ export default function LoginScreen() {
      const handleSignUp = async () => {
           const token = await client.register();
           if (token) {
-               console.log("User logged in");
                setAuth(true);
                // User was authenticated
           }
@@ -18,7 +17,6 @@ export default function LoginScreen() {
      const handleSignIn = async () => {
           const token = await client.login();
           if (token) {
-               console.log("User logged in");
                setAuth(true);
                // User was authenticated
           }

@@ -1,13 +1,10 @@
 import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import Colors from '../Utils/Colors'
-import SelectionHeading from './SelectionHeading';
-
 export default function CategoryList({ categories }) {
      const [activeIndex, setActiveIndex] = useState();
      return (
           <View style={{ marginTop: 20 }}>
-               <SelectionHeading heading={'Category'} />
                <FlatList
                     data={categories}
                     horizontal={true}
