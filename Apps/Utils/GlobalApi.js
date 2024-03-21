@@ -46,7 +46,6 @@ const getCourseList = async () => {
       }
     }
   }
-  
   `
   const result = await request(MASTER_URL, query);
   return result;

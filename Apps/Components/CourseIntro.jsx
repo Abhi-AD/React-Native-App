@@ -1,18 +1,24 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
-import Colors from '../Utils/Colors'
+import { Video, ResizeMode } from 'expo-av';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-export default function CourseItem({ course }) {
-     const navigation = useNavigation()
-     return (
-          <TouchableOpacity style={styles.container} onPress={()=>navigation.navigate('course-detail',{
-               course:course
-          })}>
-               <Image source={{ uri: course.photo.url }}
-                    style={styles.image}
+import Colors from '../Utils/Colors';
+import SelectionHeading from './SelectionHeading'
+
+export default function CourseIntro({ course }) {
+     return course && (
+          <View>
+               <Video
+                    style={styles.video}
+                    soundPlay={true}
+                    source={{
+                         uri: course?.chapter[0]?.video?.url,
+                    }}
+                    useNativeControls={true}
+                    resizeMode={ResizeMode.CONTAIN}
+                    isLooping
                />
-               <View style={styles}>
+               <View style={styles.main}>
                     <Text style={styles.title}>{course.name}</Text>
                     <Text style={styles.author}>{course.author}</Text>
                     <View style={styles.chapterdetais}>
@@ -24,30 +30,31 @@ export default function CourseItem({ course }) {
                               <Text style={{ color: Colors.GRAY, fontFamily: 'outfit-regular' }}>Watch On Youtube</Text>
                          </View>
                          }
-                         <Text style={{ fontFamily: 'outfit-bold', color: Colors.PRIMARY }}>{course.free?'Free':'Paid'}</Text>
+                         <Text style={{ fontFamily: 'outfit-bold', color: Colors.PRIMARY }}>{course.free ? 'Free' : 'Paid'}</Text>
                     </View>
+                    <SelectionHeading heading={'Description'} />
+                    <Text numberOfLines={4} style={{ marginTop: -10, fontFamily: 'outfit-regular' }}>{course?.biography}</Text>
                </View>
-          </TouchableOpacity>
+          </View>
      )
 }
 
 const styles = StyleSheet.create({
-     container: {
-          backgroundColor: Colors.WHITE,
-          width: 260,
-          marginRight: 15,
-          padding: 10,
-          borderRadius: 10,
-          gap: 4
+     video: {
+          width: '100%',
+          height: 200
      },
-     image: {
-          width: 240,
-          borderRadius: 10,
-          height: 110
+     main: {
+          display: 'flex',
+          marginTop: 10,
+          gap: 10,
+          backgroundColor: Colors.WHITE,
+          padding: 15,
+          borderRadius: 10
      },
      title: {
-          fontSize: 16,
-          fontFamily: 'outfit-bold'
+          fontFamily: 'outfit-bold',
+          fontSize: 20,
      },
      author: {
           fontSize: 14,
@@ -70,6 +77,5 @@ const styles = StyleSheet.create({
           flexDirection: 'row',
           gap: 6,
           alignItems: 'center'
-
      }
 })

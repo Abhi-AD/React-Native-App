@@ -6,6 +6,7 @@ import CourseScreen from '../Screen/CourseScreen';
 import ProfileScreen from '../Screen/ProfileScreen';
 import Colors from '../Utils/Colors';
 import { Ionicons } from '@expo/vector-icons';
+import HomeNavigation from './HomeNavigation';
 
 const Tab = createBottomTabNavigator();
 

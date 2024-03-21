@@ -6,6 +6,7 @@ import { client } from './Apps/Utils/kindConfig';
 import { NavigationContainer } from '@react-navigation/native';
 import TabNavigation from './Apps/Navigations/TabNavigation';
 import { useFonts } from 'expo-font';
+import HomeNavigation from './Apps/Navigations/HomeNavigation';
 
 
 export const AuthContext = createContext()
@@ -41,7 +42,7 @@ export default function App() {
       {/* <LoginScreen /> */}
       <AuthContext.Provider value={{ auth, setAuth }}>
         <NavigationContainer>
-          {auth ? <TabNavigation /> : <LoginScreen />}
+          {auth ? <HomeNavigation /> : <LoginScreen />}
         </NavigationContainer>
       </AuthContext.Provider>
     </View>
