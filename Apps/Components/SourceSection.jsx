@@ -1,22 +1,28 @@
-import { View, Text, Image, StyleSheet } from 'react-native'
-import React from 'react'
+import { View, Text, Image, StyleSheet, TouchableOpacity, Linking } from 'react-native'
+import React, { useState } from 'react'
 import Colors from '../Utils/Colors'
 
-export default function SourceSection() {
+export default function SourceSection({ userEnrollment, course }) {
+     const [isMember, setIsMember] = useState();
+     const onSourceClick = (url) => {
+          if (isMember) {
+               Linking.openURL(url)
+          }
+     }
      return (
           <View style={styles.main}>
-               <View style={styles.container}>
+               <TouchableOpacity style={styles.container} onPress={() => onSourceClick(course.sourceCode)}>
                     <Image source={require('../../assets/images/open-source.png')} style={styles.image} />
                     <Text style={styles.text}>Source Code</Text>
-               </View>
-               <View style={styles.container}>
+               </TouchableOpacity>
+               <TouchableOpacity style={styles.container} onPress={() => onSourceClick(course.demoUrl)}>
                     <Image source={require('../../assets/images/demo.jpeg')} style={styles.image} />
                     <Text style={styles.text}>Demo</Text>
-               </View>
-               <View style={styles.container}>
+               </TouchableOpacity>
+               <TouchableOpacity style={styles.container} onPress={() => onSourceClick(course.youtubeUrl)}>
                     <Image source={require('../../assets/images/youtube.jpg')} style={styles.image} />
                     <Text style={styles.text}>Youtube</Text>
-               </View>
+               </TouchableOpacity>
           </View>
      )
 }
@@ -26,16 +32,16 @@ const styles = StyleSheet.create({
           flexDirection: 'row',
           justifyContent: 'space-evenly',
           marginTop: 20,
-          gap:20,
-          marginBottom:20,
+          gap: 20,
+          marginBottom: 20,
      },
      container: {
           backgroundColor: Colors.WHITE,
           padding: 20,
           alignItems: 'center',
           borderRadius: 10,
-          width:100,
-          borderWidth:1.2
+          width: 100,
+          borderWidth: 1.2
      },
      image: {
           width: 40,

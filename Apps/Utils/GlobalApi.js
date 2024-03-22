@@ -32,6 +32,7 @@ const getCourseList = async () => {
       sourceCode
       tag
       youtubeUrl
+      demoUrl
       photo {
         url
       }
@@ -51,10 +52,52 @@ const getCourseList = async () => {
   return result;
 }
 
+const checkUserCourseEnrollment = async (slug, email) => {
+  const query = gql`
+  query MyQuery {
+    userEnrollCourses(
+      where: {courseId: "`+ slug + `", 
+        userEmail: "`+ email + `"}
+    )  {
+      completedChapter {
+        ... on CompletedChapter {
+          id
+          chapterId
+        }
+      }
+      courseId
+      id
+    }
+  }
+  `
+  const result = await request(MASTER_URL, query)
+  return result;
+}
+
+const saveUserCourseEnrollment = async (slug, email) => {
+  const query = gql`
+  mutation Mymutation {
+    createUserEnrollCourse(
+      data: {courseId: "`+ slug + `", 
+      courseList: {connect: {slug: "`+ slug + `"}},
+       userEmail: "` + email + `"}
+    ) {
+      id
+    }
+    publishManyUserEnrollCourses {
+      count
+    }
+  }
+  `
+  const result = await request(MASTER_URL, query);
+  return result;
+}
 
 export default {
   getCateogory,
-  getCourseList
+  getCourseList,
+  checkUserCourseEnrollment,
+  saveUserCourseEnrollment
 }
 
 

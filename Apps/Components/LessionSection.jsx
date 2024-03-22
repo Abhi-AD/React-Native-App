@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import SelectionHeading from './SelectionHeading'
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../Utils/Colors';
-export default function LessionSection({ course }) {
-     const [isEnrolled, setIsEnrolled] = useState(false);
+export default function LessionSection({ course, userEnrollment }) {
+     // const [isEnrolled, setIsEnrolled] = useState(false);
      return (
           <View>
                <SelectionHeading heading={'Lession'} />
@@ -16,7 +16,7 @@ export default function LessionSection({ course }) {
                                    <Text style={styles.unit}>{index + 1}</Text>
                                    <Text style={styles.name}>{item.name}</Text>
                               </View>
-                              {isEnrolled||index==0 ? <Ionicons name="play-circle" size={34} color={Colors.PRIMARY} />
+                              {userEnrollment?.length > 0 || index == 0 ? <Ionicons name="play-circle" size={34} color={Colors.PRIMARY} />
                                    : <Ionicons name="lock-closed" size={34} color={Colors.GRAY} />}
                          </TouchableOpacity>
                     )}
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
           fontFamily: 'outfit-medium',
           fontSize: 17
      },
-     footer:{
-          height:50
+     footer: {
+          height: 50
      }
 })

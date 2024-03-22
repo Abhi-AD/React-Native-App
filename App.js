@@ -10,6 +10,7 @@ import HomeNavigation from './Apps/Navigations/HomeNavigation';
 
 
 export const AuthContext = createContext()
+export const UserDetailContext = createContext()
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
     'outfit-bold': require('./assets/fonts/Outfit-Bold.ttf'),
@@ -19,6 +20,7 @@ export default function App() {
   });
 
   const [auth, setAuth] = useState(false);
+  const [userDetail, setUserDetail] = useState()
 
   useEffect(() => {
     checkAuthenticate();
@@ -28,6 +30,7 @@ export default function App() {
     // Using `isAuthenticated` to check if the user is authenticated or not
     if (await client.isAuthenticated) {
       const userProfile = await client.getUserDetails();
+      setUserDetail(userProfile)
       setAuth(true)
       // Need to implement, e.g: call an api, etc...
     } else {
@@ -41,9 +44,11 @@ export default function App() {
     <View style={styles.container}>
       {/* <LoginScreen /> */}
       <AuthContext.Provider value={{ auth, setAuth }}>
-        <NavigationContainer>
-          {auth ? <HomeNavigation /> : <LoginScreen />}
-        </NavigationContainer>
+        <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
+          <NavigationContainer>
+            {auth ? <HomeNavigation /> : <LoginScreen />}
+          </NavigationContainer>
+        </UserDetailContext.Provider>
       </AuthContext.Provider>
     </View>
   );
