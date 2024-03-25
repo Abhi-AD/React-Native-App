@@ -25,7 +25,7 @@ const getCourseList = async () => {
   query CourseList {
     courseLists(first: 50, orderBy: createdAt_DESC) {
       author
-      biography
+      description
       free
       id
       name
@@ -93,11 +93,27 @@ const saveUserCourseEnrollment = async (slug, email) => {
   return result;
 }
 
+
+const checkUserMembership = async (email) => {
+  const query = gql`
+  query MyQuery {
+    memberships(where: {email: "`+ email + `",active: true}) {
+      id
+      createdAt
+      email
+    }
+  }
+  `
+  const result = await request(MASTER_URL, query);
+  return result;
+}
+
 export default {
   getCateogory,
   getCourseList,
   checkUserCourseEnrollment,
-  saveUserCourseEnrollment
+  saveUserCourseEnrollment,
+  checkUserMembership
 }
 
 

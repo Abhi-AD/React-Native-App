@@ -33,7 +33,7 @@ export default function CourseIntro({ course }) {
                          <Text style={{ fontFamily: 'outfit-bold', color: Colors.PRIMARY }}>{course.free ? 'Free' : 'Paid'}</Text>
                     </View>
                     <SelectionHeading heading={'Description'} />
-                    <Text numberOfLines={4} style={{ marginTop: -10, fontFamily: 'outfit-regular' }}>{course?.biography}</Text>
+                    <Text numberOfLines={4} style={{ marginTop: -10, fontFamily: 'outfit-regular' }}>{course?.description}</Text>
                </View>
           </View>
      )

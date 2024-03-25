@@ -7,10 +7,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import TabNavigation from './Apps/Navigations/TabNavigation';
 import { useFonts } from 'expo-font';
 import HomeNavigation from './Apps/Navigations/HomeNavigation';
+import GlobalApi from './Apps/Utils/GlobalApi';
 
 
 export const AuthContext = createContext()
 export const UserDetailContext = createContext()
+export const MembershipContext = createContext()
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
     'outfit-bold': require('./assets/fonts/Outfit-Bold.ttf'),
@@ -20,7 +22,8 @@ export default function App() {
   });
 
   const [auth, setAuth] = useState(false);
-  const [userDetail, setUserDetail] = useState()
+  const [userDetail, setUserDetail] = useState();
+  const [isMember, setIsMember] = useState(false);
 
   useEffect(() => {
     checkAuthenticate();
@@ -32,6 +35,7 @@ export default function App() {
       const userProfile = await client.getUserDetails();
       setUserDetail(userProfile)
       setAuth(true)
+      checkUserMembership();
       // Need to implement, e.g: call an api, etc...
     } else {
       setAuth(false)
@@ -39,15 +43,25 @@ export default function App() {
     }
   };
 
+  // Check Membership
+  const checkUserMembership = () => {
+    GlobalApi.checkUserMembership(userDetail.email).then(resp => {
+      setIsMember(resp.memberships?.length > 0);
+      console.log(resp);
+    })
+  }
+
 
   return (
     <View style={styles.container}>
       {/* <LoginScreen /> */}
       <AuthContext.Provider value={{ auth, setAuth }}>
         <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
-          <NavigationContainer>
-            {auth ? <HomeNavigation /> : <LoginScreen />}
-          </NavigationContainer>
+          <MembershipContext.Provider value={{ isMember, setIsMember }}>
+            <NavigationContainer>
+              {auth ? <HomeNavigation /> : <LoginScreen />}
+            </NavigationContainer>
+          </MembershipContext.Provider>
         </UserDetailContext.Provider>
       </AuthContext.Provider>
     </View>

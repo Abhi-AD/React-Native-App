@@ -7,7 +7,7 @@ import CourseIntro from '../Components/CourseIntro';
 import SourceSection from '../Components/SourceSection';
 import EnrollmentSection from '../Components/EnrollmentSection';
 import LessionSection from '../Components/LessionSection';
-import { UserDetailContext } from '../../App';
+import { MembershipContext, UserDetailContext } from '../../App';
 import GlobalApi from '../Utils/GlobalApi';
 
 export default function CourseDetailScreen() {
@@ -16,6 +16,7 @@ export default function CourseDetailScreen() {
   const [course, setCourse] = useState();
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
   const [userEnrollment, setUserEnrollment] = useState();
+  const { isMember, setIsMember } = useContext(MembershipContext);
 
 
   useEffect(() => {
@@ -32,24 +33,32 @@ export default function CourseDetailScreen() {
   }
   const onEnrollmentPress = () => {
     if (course?.free) {
-      GlobalApi.saveUserCourseEnrollment(course.slug, userDetail.email).then(resp => {
-        console.log(resp);
-        if (resp) {
-          Alert.alert("Great!!!", "You just enrollment to new Course......!", [
-            {
-              text: "Ok",
-              onPress: () => console.log("Ok Press"),
-              style: "cancel"
-            }
-          ])
-          checkIsUserEnrollmentToCourse();
-        }
-      })
+      saveUserEnrollment();
     }
     else {
-      console.log("Need MemberShip....!")
+      if (!isMember) {
+        navigation.navigate('membership')
+        return;
+      }
+      saveUserEnrollment();
+      // check is Member
     }
+  }
 
+  const saveUserEnrollment = () => {
+    GlobalApi.saveUserCourseEnrollment(course.slug, userDetail.email).then(resp => {
+      console.log(resp);
+      if (resp) {
+        Alert.alert("Great!!!", "You just enrollment to new Course......!", [
+          {
+            text: "Ok",
+            onPress: () => console.log("Ok Press"),
+            style: "cancel"
+          }
+        ])
+        checkIsUserEnrollmentToCourse();
+      }
+    })
   }
 
 
