@@ -3,8 +3,15 @@ import React, { useState } from 'react'
 import SelectionHeading from './SelectionHeading'
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../Utils/Colors';
-export default function LessionSection({ course, userEnrollment, onChapterSelect, selectedChapter={} }) {
+export default function LessionSection({ course, userEnrollment, onChapterSelect, selectedChapter = {} }) {
      // const [isEnrolled, setIsEnrolled] = useState(false);
+     console.log("UserEnrollment-------------", userEnrollment)
+
+     const checkIsChapterCompleted = (chapterId) => {
+          const result = userEnrollment && userEnrollment[0].completedChapter.find(item => item.chapterId == chapterId)
+          console.log(result);
+          return result;
+     }
      return (
           <View>
                <SelectionHeading heading={'Lession'} />
@@ -12,13 +19,18 @@ export default function LessionSection({ course, userEnrollment, onChapterSelect
                     data={course?.chapter}
                     showsVerticalScrollIndicator={false}
                     renderItem={({ item, index }) => (
-                         <TouchableOpacity style={[styles.lession,selectedChapter==item&&{backgroundColor:Colors.PRIMARY_LIGHT}]} onPress={() => onChapterSelect(item)}>
+                         <TouchableOpacity style={[styles.lession, selectedChapter == item && { backgroundColor: Colors.PRIMARY_LIGHT },
+                         checkIsChapterCompleted(item.id) && { backgroundColor: Colors.LIGHT_GREEN }]}
+                              onPress={() => onChapterSelect(item)}>
                               <View style={styles.title}>
-                                   <Text style={styles.unit}>{index + 1}</Text>
+                                   <Text style={[styles.unit, checkIsChapterCompleted(item.id) && { color: Colors.DARK_GREEN, backgroundColor: Colors.LIGHT_GREEN }]}>{index + 1}</Text>
                                    <Text style={styles.name}>{item.name}</Text>
                               </View>
-                              {userEnrollment!=[] || index == 0 ? <Ionicons name="play-circle" size={34} color={Colors.PRIMARY} />
-                                   : <Ionicons name="lock-closed" size={34} color={Colors.GRAY} />}
+                              {
+                                   checkIsChapterCompleted(item.id) ? <Ionicons name="checkmark-circle" size={34} color={Colors.DARK_GREEN} />
+                                        : userEnrollment != [] || index == 0 ?
+                                             <Ionicons name="play-circle" size={34} color={Colors.PRIMARY} />
+                                             : <Ionicons name="lock-closed" size={34} color={Colors.GRAY} />}
                          </TouchableOpacity>
                     )}
                />

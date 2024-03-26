@@ -7,7 +7,7 @@ import CourseIntro from '../Components/CourseIntro';
 import SourceSection from '../Components/SourceSection';
 import EnrollmentSection from '../Components/EnrollmentSection';
 import LessionSection from '../Components/LessionSection';
-import { MembershipContext, UserDetailContext } from '../../App';
+import { MembershipContext, ReloadMethodsContextContext, UserDetailContext } from '../../App';
 import GlobalApi from '../Utils/GlobalApi';
 
 export default function CourseDetailScreen() {
@@ -17,6 +17,8 @@ export default function CourseDetailScreen() {
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
   const [userEnrollment, setUserEnrollment] = useState();
   const { isMember, setIsMember } = useContext(MembershipContext);
+  // const {reload, setReload} = useContext(ReloadMethodsContextContext);
+
 
 
   useEffect(() => {
@@ -24,9 +26,15 @@ export default function CourseDetailScreen() {
     params && userDetail && checkIsUserEnrollmentToCourse();
   }, [params && userDetail])
 
+
+  //// reload method 
+  // useEffect(() => {
+  //   reload && checkIsUserEnrollmentToCourse();
+  // }, [reload])
+
   const checkIsUserEnrollmentToCourse = (course) => {
     GlobalApi.checkUserCourseEnrollment(course?.slug, userDetail.email).then(resp => {
-      console.log("----", resp);
+      // console.log("---->", resp);
       setUserEnrollment(resp.userEnrollCourses);
     })
 
@@ -78,9 +86,9 @@ export default function CourseDetailScreen() {
       {/* Source section */}
       <SourceSection userEnrollment={userEnrollment} course={course} />
       {/* Enroll section */}
-      <EnrollmentSection userEnrollment={userEnrollment} onEnrollmentPress={() => onEnrollmentPress()} onContinuePress={() =>navigation.navigate('watch-lession',{course:course,userEnrollment:userEnrollment})} />
+      <EnrollmentSection course={course} userEnrollment={userEnrollment} onEnrollmentPress={() => onEnrollmentPress()} onContinuePress={() => navigation.navigate('watch-lession', { course: course, userEnrollment: userEnrollment })} />
       {/* Lession section */}
-      <LessionSection course={course} userEnrollment={userEnrollment} />
+      {course?.chapter[0]&&<LessionSection course={course} userEnrollment={userEnrollment} />}
     </ScrollView>
   )
 }

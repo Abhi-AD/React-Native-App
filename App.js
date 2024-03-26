@@ -13,6 +13,7 @@ import GlobalApi from './Apps/Utils/GlobalApi';
 export const AuthContext = createContext()
 export const UserDetailContext = createContext()
 export const MembershipContext = createContext()
+export const ReloadMethodsContext = createContext();
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
     'outfit-bold': require('./assets/fonts/Outfit-Bold.ttf'),
@@ -24,6 +25,7 @@ export default function App() {
   const [auth, setAuth] = useState(false);
   const [userDetail, setUserDetail] = useState();
   const [isMember, setIsMember] = useState(false);
+  const [reload, setReload] = useState()
 
   useEffect(() => {
     checkAuthenticate();
@@ -58,10 +60,11 @@ export default function App() {
       <AuthContext.Provider value={{ auth, setAuth }}>
         <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
           <MembershipContext.Provider value={{ isMember, setIsMember }}>
-            <NavigationContainer>
-              {/* {auth ? <HomeNavigation /> : <LoginScreen />} */}
-              <HomeNavigation />
-            </NavigationContainer>
+            <ReloadMethodsContext.Provider value={{ reload, setReload }}>
+              <NavigationContainer>
+                {auth ? <HomeNavigation /> : <LoginScreen />}
+              </NavigationContainer>
+            </ReloadMethodsContext.Provider>
           </MembershipContext.Provider>
         </UserDetailContext.Provider>
       </AuthContext.Provider>

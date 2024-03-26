@@ -1,26 +1,33 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ToastAndroid } from 'react-native'
-import React, { useEffect } from 'react'
-import { useRoute } from '@react-navigation/native'
+import React, { useContext, useEffect } from 'react'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { useState } from 'react/cjs/react.production.min';
 import { Video, ResizeMode } from 'expo-av';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../Utils/Colors';
 import LessionSection from '../Components/LessionSection';
 import GlobalApi from '../Utils/GlobalApi';
+import { ReloadMethodsContext } from '../../App';
 
 
 export default function WatchLession() {
      const { params } = useRoute();
-     const { userEnrollment, serUserEnrollment } = useState(params?.userEnrollment[0]);
+     const { userEnrollment, serUserEnrollment } = useState(params?.userEnrollment);
      const [course, setCourse] = useState(params?.course);
      const [selectedChapter, setSelectedChapter] = useState();
+     const {reload, setReload} = useContext(ReloadMethodsContext);
+     const navigation = useNavigation()
+
 
      useEffect(() => {
           params && setSelectedChapter(params?.course?.chapter[0]);
+          params&&serUserEnrollment(params?.userEnrollment)
      }, [params])
 
      const onChapterComplted=() => {
-          GlobalApi.markChapterCompleted(userEnrollment.id,selectedChapter.id).then(res=>{
+          GlobalApi.markChapterCompleted(userEnrollment[0].id,selectedChapter.id).then(resp=>{
+               console.log("-----",resp)
+               setReload("Update Enrollment")
                ToastAndroid.show('Chapter Mark Completed!',ToastAndroid.SHORT);
           })
      }
@@ -28,7 +35,7 @@ export default function WatchLession() {
      return selectedChapter && (
           <ScrollView style={{ padding: 20 }}>
                <View style={styles.header}>
-                    <TouchableOpacity onPress={() => navigator.goBack()}>
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
                          <Ionicons name="arrow-back-circle" size={40} color="black" />
                     </TouchableOpacity>
                     <Text style={{ fontSize: 27, fontFamily: 'outfit-bold' }}>Lessons</Text>

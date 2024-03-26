@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet,Image } from 'react-native'
 import React from 'react'
 import { Video, ResizeMode } from 'expo-av';
 import { Ionicons } from '@expo/vector-icons';
@@ -8,16 +8,21 @@ import SelectionHeading from './SelectionHeading'
 export default function CourseIntro({ course }) {
      return course && (
           <View>
-               <Video
-                    style={styles.video}
-                    soundPlay={true}
-                    source={{
-                         uri: course?.chapter[0]?.video?.url,
-                    }}
-                    useNativeControls={true}
-                    resizeMode={ResizeMode.CONTAIN}
-                    isLooping
-               />
+               {course?.chapter[0]?(
+                    <Video
+                         style={styles.video}
+                         soundPlay={true}
+                         source={{ uri: course.chapter[0].video.url }}
+                         useNativeControls={true}
+                         resizeMode={ResizeMode.CONTAIN}
+                         isLooping={true} // Corrected to isLooping={true}
+                    />
+               ) : (
+                    <Image
+                         source={{ uri: course?.photo?.url }}
+                         style={styles.image}
+                    />
+               )}
                <View style={styles.main}>
                     <Text style={styles.title}>{course.name}</Text>
                     <Text style={styles.author}>{course.author}</Text>
@@ -43,6 +48,12 @@ const styles = StyleSheet.create({
      video: {
           width: '100%',
           height: 200
+     },
+     image: {
+          width: '100%',
+          height: 280,
+          borderRadius:10,
+          marginTop:10
      },
      main: {
           display: 'flex',
