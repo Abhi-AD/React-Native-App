@@ -37,9 +37,8 @@ export default function ProfileScreen({ navigation }) {
     {
       id: 3,
       name: 'Abhi-AD',
-      path: 'school',
       url: 'https://github.com/Abhi-AD',
-      icon: 'person',
+      icon: 'logo-github',
     },
     {
       id: 4,
