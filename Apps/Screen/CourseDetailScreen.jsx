@@ -7,17 +7,18 @@ import CourseIntro from '../Components/CourseIntro';
 import SourceSection from '../Components/SourceSection';
 import EnrollmentSection from '../Components/EnrollmentSection';
 import LessionSection from '../Components/LessionSection';
-import { MembershipContext, ReloadMethodsContextContext, UserDetailContext } from '../../App';
+import { MembershipContext, ReloadMethodsContext, UserDetailContext } from '../../App';
 import GlobalApi from '../Utils/GlobalApi';
 
 export default function CourseDetailScreen() {
   const { params } = useRoute();
   const navigation = useNavigation();
   const [course, setCourse] = useState();
+  const { isMember, setIsMember } = useContext(MembershipContext);
+  const {reload, setReload} = useContext(ReloadMethodsContext);
+
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
   const [userEnrollment, setUserEnrollment] = useState();
-  const { isMember, setIsMember } = useContext(MembershipContext);
-  // const {reload, setReload} = useContext(ReloadMethodsContextContext);
 
 
 
@@ -27,10 +28,10 @@ export default function CourseDetailScreen() {
   }, [params && userDetail])
 
 
-  //// reload method 
-  // useEffect(() => {
-  //   reload && checkIsUserEnrollmentToCourse();
-  // }, [reload])
+  // reload method 
+  useEffect(() => {
+    reload && checkIsUserEnrollmentToCourse();
+  }, [reload])
 
   const checkIsUserEnrollmentToCourse = (course) => {
     GlobalApi.checkUserCourseEnrollment(course?.slug, userDetail.email).then(resp => {
