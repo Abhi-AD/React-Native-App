@@ -3,20 +3,21 @@ import React, { useState } from 'react'
 import SelectionHeading from './SelectionHeading'
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../Utils/Colors';
-export default function LessionSection({ course, userEnrollment }) {
+export default function LessionSection({ course, userEnrollment, onChapterSelect, selectedChapter={} }) {
      // const [isEnrolled, setIsEnrolled] = useState(false);
      return (
           <View>
                <SelectionHeading heading={'Lession'} />
                <FlatList
                     data={course?.chapter}
+                    showsVerticalScrollIndicator={false}
                     renderItem={({ item, index }) => (
-                         <TouchableOpacity style={styles.lession}>
+                         <TouchableOpacity style={[styles.lession,selectedChapter==item&&{backgroundColor:Colors.PRIMARY_LIGHT}]} onPress={() => onChapterSelect(item)}>
                               <View style={styles.title}>
                                    <Text style={styles.unit}>{index + 1}</Text>
                                    <Text style={styles.name}>{item.name}</Text>
                               </View>
-                              {userEnrollment?.length > 0 || index == 0 ? <Ionicons name="play-circle" size={34} color={Colors.PRIMARY} />
+                              {userEnrollment!=[] || index == 0 ? <Ionicons name="play-circle" size={34} color={Colors.PRIMARY} />
                                    : <Ionicons name="lock-closed" size={34} color={Colors.GRAY} />}
                          </TouchableOpacity>
                     )}
@@ -31,6 +32,7 @@ const styles = StyleSheet.create({
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
+          backgroundColor: Colors.WHITE,
           padding: 20,
           borderWidth: 1,
           marginBottom: 10,

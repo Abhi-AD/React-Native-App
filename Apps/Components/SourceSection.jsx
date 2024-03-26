@@ -1,12 +1,17 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity, Linking } from 'react-native'
 import React, { useState } from 'react'
 import Colors from '../Utils/Colors'
+import { useNavigation } from '@react-navigation/native';
 
 export default function SourceSection({ userEnrollment, course }) {
      const [isMember, setIsMember] = useState();
+     const navigation = useNavigation();
      const onSourceClick = (url) => {
           if (isMember) {
                Linking.openURL(url)
+          }
+          else{
+               navigation.navigate("membership")
           }
      }
      return (

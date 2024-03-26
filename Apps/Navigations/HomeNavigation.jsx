@@ -5,6 +5,7 @@ import HomeScreen from '../Screen/HomeScreen';
 import CourseDetailScreen from '../Screen/CourseDetailScreen'
 import TabNavigation from './TabNavigation';
 import MembershipModel from '../Screen/MembershipModel';
+import WatchLession from '../Screen/WatchLession';
 const Stack = createStackNavigator();
 
 export default function HomeNavigation() {
@@ -17,6 +18,7 @@ export default function HomeNavigation() {
                          presentation: "modal"
                     }}
                />
+               <Stack.Screen name='watch-lession' component={WatchLession} />
           </Stack.Navigator>
      )
 }

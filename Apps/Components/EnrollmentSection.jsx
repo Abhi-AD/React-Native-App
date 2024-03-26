@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Colors from '../Utils/Colors'
 
-export default function EnrollmentSection({ userEnrollment, onEnrollmentPress }) {
+export default function EnrollmentSection({ userEnrollment, onEnrollmentPress,onContinuePress }) {
      // const [isEnrolled, setIsEnrolled] = useState(false);
 
      useEffect(() => {
@@ -13,8 +13,8 @@ export default function EnrollmentSection({ userEnrollment, onEnrollmentPress })
      return (
           <View style={styles.container}>
                {userEnrollment?.length > 0 ?
-                    <TouchableOpacity onPress={() => console.log("Continue")}>< Text style={styles.header}>Continue</Text></TouchableOpacity>
-                    : <TouchableOpacity onPress={() => onEnrollmentPress()}><Text style={styles.header}>Enroll to Course</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={() => onContinuePress()}>< Text style={styles.header}>Continue</Text></TouchableOpacity>
+                    :<TouchableOpacity onPress={() => onEnrollmentPress()}><Text style={styles.header}>Enroll to Course</Text></TouchableOpacity>
                }</View >
      )
 }

@@ -24,8 +24,8 @@ export default function CourseDetailScreen() {
     params && userDetail && checkIsUserEnrollmentToCourse();
   }, [params && userDetail])
 
-  const checkIsUserEnrollmentToCourse = () => {
-    GlobalApi.checkUserCourseEnrollment(params.course?.slug, userDetail.email).then(resp => {
+  const checkIsUserEnrollmentToCourse = (course) => {
+    GlobalApi.checkUserCourseEnrollment(course?.slug, userDetail.email).then(resp => {
       console.log("----", resp);
       setUserEnrollment(resp.userEnrollCourses);
     })
@@ -56,7 +56,7 @@ export default function CourseDetailScreen() {
             style: "cancel"
           }
         ])
-        checkIsUserEnrollmentToCourse();
+        checkIsUserEnrollmentToCourse(course);
       }
     })
   }
@@ -78,7 +78,7 @@ export default function CourseDetailScreen() {
       {/* Source section */}
       <SourceSection userEnrollment={userEnrollment} course={course} />
       {/* Enroll section */}
-      <EnrollmentSection userEnrollment={userEnrollment} onEnrollmentPress={() => onEnrollmentPress()} />
+      <EnrollmentSection userEnrollment={userEnrollment} onEnrollmentPress={() => onEnrollmentPress()} onContinuePress={() =>navigation.navigate('watch-lession',{course:course,userEnrollment:userEnrollment})} />
       {/* Lession section */}
       <LessionSection course={course} userEnrollment={userEnrollment} />
     </ScrollView>
