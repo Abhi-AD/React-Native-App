@@ -59,8 +59,7 @@ export default function App() {
         <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
           <MembershipContext.Provider value={{ isMember, setIsMember }}>
             <NavigationContainer>
-              {/* {auth ? <HomeNavigation /> : <LoginScreen />} */}
-              <HomeNavigation/>
+              {auth ? <HomeNavigation /> : <LoginScreen />}
             </NavigationContainer>
           </MembershipContext.Provider>
         </UserDetailContext.Provider>
