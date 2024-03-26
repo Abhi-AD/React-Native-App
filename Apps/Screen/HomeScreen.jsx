@@ -13,6 +13,7 @@ export default function HomeScreen() {
   const { auth, setAuth } = useContext(AuthContext);
   const [categories, setCategories] = useState();
   const [courseList, setCourseList] = useState([]);
+  const [orgCourseList, setOrgCourseList] = useState([]);
 
   useEffect(() => {
     getCateogory();
@@ -38,6 +39,7 @@ export default function HomeScreen() {
   const getCourseList = () => {
     GlobalApi.getCourseList().then(resp => {
       setCourseList(resp?.courseLists);
+      setOrgCourseList(resp?.courseLists);
     });
   };
 
@@ -46,12 +48,17 @@ export default function HomeScreen() {
     return result;
   };
 
+  const filterCourseList = (category) => {
+    const result = courseList.filter((item) => item.tag.includes(category));
+    setCourseList(result);
+  }
+
   return (
     <View style={{ padding: 20, marginTop: 25 }}>
       <ScrollView>
         <Header />
         <SelectionHeading heading={'Category'} />
-        <CategoryList categories={categories} />
+        <CategoryList categories={categories} setSelectedCategory={(category) => filterCourseList(category)} />
 
         {/* All courses */}
         <SelectionHeading heading={'Latest Course'} />
